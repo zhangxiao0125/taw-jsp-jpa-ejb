@@ -8,6 +8,7 @@ package g21.service.marketing;
 import g21.dao.ListaFacade;
 import g21.dao.NotificacionFacade;
 import g21.dao.UsuarioFacade;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Lista;
 import g21.entity.Notificacion;
 import g21.entity.Usuario;
@@ -30,9 +31,9 @@ public class NotificacionService {
     @EJB
     NotificacionFacade notificacionFacade;
 
-    public void enviarNotificacionParaLista(String idLista, String notificacion) {
+    public void enviarNotificacionParaLista(String idLista, UsuarioDTO usuario, String notificacion) {
         Lista l = this.listaFacade.find(Integer.parseInt(idLista));
-        Usuario marketingUsuario = this.usuarioFacade.find(4);
+        Usuario marketingUsuario = this.usuarioFacade.find(usuario.getId());
 
         this.notificacionFacade.enviarNotificacionParaLista(l, marketingUsuario, notificacion);
     }
