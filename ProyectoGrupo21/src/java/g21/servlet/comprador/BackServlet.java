@@ -40,7 +40,6 @@ public class BackServlet extends HttpServlet {
         Usuario usuario = this.uf.findbyuserid(id);
         
         
-        request.setAttribute("usuario1", usuario);
         
         request.getRequestDispatcher("/WEB-INF/comprador/usuario.jsp").forward(request, response);
     }
