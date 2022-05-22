@@ -1,14 +1,10 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-package g21.servlet.comprador;
+package g21.servlet.marketing;
 
-import g21.dao.UsuarioFacade;
-import g21.dto.marketing.UsuarioDTO;
-import g21.entity.Usuario;
-import g21.service.marketing.UsuarioService;
-import javax.ejb.EJB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,16 +16,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author cecil
+ * @author Xiao
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
-
-    @EJB
-    UsuarioFacade uf;
-
-    @EJB
-    UsuarioService usuarioService;
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,45 +32,10 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String email = request.getParameter("email");
-
-        UsuarioDTO userbyemail = this.usuarioService.findByEmail(email);
-
         HttpSession session = request.getSession();
-        session.setAttribute("usuario", userbyemail);
-        if (userbyemail == null) {
-            String message = "Usuario no existe. Por favor registrate";
+        session.invalidate();
 
-            response.sendRedirect(request.getContextPath() + "/FirstServlet?message=" + message);
-        } else {
-
-            String message = null;
-            request.setAttribute("message", message);
-            request.setAttribute("usuario", userbyemail);
-
-            //ver el rol de este usuario
-            switch (userbyemail.getRolId()) {
-                case 1:
-                    //comprador
-                    request.getRequestDispatcher("/WEB-INF/comprador/usuario.jsp").forward(request, response);
-                    break;
-                case 2:
-                    //analista
-                    response.sendRedirect(request.getContextPath() + "/AnalistaServlet?analistaid=" + userbyemail.getId());
-                    break;
-                case 5:
-                    //Marketing
-                    response.sendRedirect(request.getContextPath() + "/ListasCompradorServlet");
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -38,7 +38,9 @@ public class BackServlet extends HttpServlet {
         String userid = request.getParameter("id");
         int id = Integer.parseInt(userid);
         Usuario usuario = this.uf.findbyuserid(id);
-        request.setAttribute("usuario", usuario);
+        
+        
+        request.setAttribute("usuario1", usuario);
         
         request.getRequestDispatcher("/WEB-INF/comprador/usuario.jsp").forward(request, response);
     }

@@ -4,10 +4,13 @@
  * and open the template in the editor.
  */
 package g21.servlet.analista;
+
 import g21.dto.EstudiosDTO;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Estudios;
 import g21.entity.Usuario;
 import g21.service.EstudiosService;
+import g21.service.marketing.UsuarioService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -27,8 +30,11 @@ import javax.servlet.http.HttpSession;
 public class CheckStudioServlet extends HttpServlet {
 
     //@EJB EstudiosFacade ef;
-    @EJB EstudiosService es;
-    
+    @EJB
+    EstudiosService es;
+    @EJB
+    UsuarioService usuarioService;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,18 +49,17 @@ public class CheckStudioServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario)session.getAttribute("usuario");
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
         
         String strq = request.getParameter("query");
         String respuesta = this.es.CheckQuery(strq);
         
-        if("Query valida".equals(respuesta)) {
+        if ("Query valida".equals(respuesta)) {
             
-            
-            Estudios estudio = this.es.crearEstudio(usuario, "", strq, "");
+            Estudios estudio = this.es.crearEstudio(this.usuarioService.find(usuario.getId().toString()), "", strq, "");
             //Integer estudio = this.es.crearEstudio(usuario, "", strq, "");
             
-            response.sendRedirect(request.getContextPath() + "/VisualizarEstudioServlet?estudioid=" + estudio.getEstudioId() );
+            response.sendRedirect(request.getContextPath() + "/VisualizarEstudioServlet?estudioid=" + estudio.getEstudioId());
         } else {
             request.setAttribute("query", strq);
             request.setAttribute("error", respuesta);

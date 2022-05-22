@@ -26,22 +26,21 @@
         </style>
     </head>
     <body>
-        <% 
-            Usuario usuario = (Usuario) request.getAttribute("usuario");
+        <jsp:include page="/WEB-INF/comon/cabecera.jsp" />           
+
+        <%
+            Usuario usuario = (Usuario) request.getAttribute("usuario1");
             List<Producto> prodcompr = usuario.getProductoList1();
         %>
         <h1>Producto Comprado</h1>
 
 
         <%
-            if(prodcompr.isEmpty())
-            {
+            if (prodcompr.isEmpty()) {
         %>
         <p>No Producto Comprado</p>
-        <% 
-            }
-            else
-            {
+        <%
+        } else {
         %>
         <form action="BusquedaServlet?userid=<%=usuario.getUserId()%>&prod=compr" method="post">
             <input type="text" name="search" value=""/>
@@ -49,14 +48,13 @@
         </form>
         </br>
         <%
-                        for(Producto p: prodcompr)
-                        {
-                            Usuario vendedor = p.getVendedorId();
-                            SimpleDateFormat DateFor = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-                            Date compuja = p.getComienzoPuja();
-                            Date finpuja = p.getFinalPuja();
-                            String comienzopuja = DateFor.format(compuja);
-                            String finalpuja = DateFor.format(finpuja);
+            for (Producto p : prodcompr) {
+                Usuario vendedor = p.getVendedorId();
+                SimpleDateFormat DateFor = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+                Date compuja = p.getComienzoPuja();
+                Date finpuja = p.getFinalPuja();
+                String comienzopuja = DateFor.format(compuja);
+                String finalpuja = DateFor.format(finpuja);
 
 
         %>
@@ -65,33 +63,33 @@
             <tr>
 
                 <th>Titulo:</th>
-                <th><%= p.getTitulo() %></th>
+                <th><%= p.getTitulo()%></th>
 
             </tr>
             <tr>
                 <th>Descripcion:</th>
-                <td><%= p.getDescripcion() %></td>
+                <td><%= p.getDescripcion()%></td>
             </tr>
             <tr>
                 <th>Vendedor:</th>
-                <td><%= vendedor.getNombre() %> <%= vendedor.getApellido() %></td>
+                <td><%= vendedor.getNombre()%> <%= vendedor.getApellido()%></td>
             </tr>
             <tr>
                 <td colspan="2" align = "center"><img src="<%= p.getUrlFoto()%>" width="150" height="150"></td>
             </tr>
             <tr>
                 <th>Precio</th>
-                <td><%= p.getPrecio() %>$ </td>
+                <td><%= p.getPrecio()%>$ </td>
 
             </tr>
             <tr>
                 <th>Comienzo Puja</th>
-                <td><%= comienzopuja %> </td>
+                <td><%= comienzopuja%> </td>
 
             </tr>
             <tr>
                 <th>Final Puja</th>
-                <td><%= finalpuja %> </td>
+                <td><%= finalpuja%> </td>
 
             </tr>
 

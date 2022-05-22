@@ -89,7 +89,7 @@ public class RegistrationServlet extends HttpServlet {
             user.setCategoriaList(catpref); 
             this.uf.create(user);
             
-            request.setAttribute("usuario", user);
+            request.setAttribute("usuario1", user);
             request.getRequestDispatcher("/WEB-INF/comprador/usuario.jsp").forward(request, response);
     }
 

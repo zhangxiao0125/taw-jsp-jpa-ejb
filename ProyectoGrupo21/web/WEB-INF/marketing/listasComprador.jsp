@@ -15,6 +15,8 @@
         <title>Listas de compradores</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/comon/cabecera.jsp" />           
+
         <h1>Listas de compradores</h1>
         <%
             List<Lista> listasComprador = (List) request.getAttribute("listasComprador");

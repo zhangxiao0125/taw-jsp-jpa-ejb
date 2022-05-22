@@ -7,6 +7,7 @@ package g21.servlet.analista;
 
 import g21.dao.EstudiosFacade;
 import g21.dao.UsuarioFacade;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Estudios;
 import g21.entity.Usuario;
 import g21.service.EstudiosService;
@@ -45,9 +46,9 @@ public class BorrarEstudioServlet extends HttpServlet {
         this.es.borrarEstudio(estudioid);
         
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario)session.getAttribute("usuario");
+        UsuarioDTO usuario = (UsuarioDTO)session.getAttribute("usuario");
         
-        response.sendRedirect(request.getContextPath() + "/AnalistaServlet?analistaid=" + usuario.getUserId());
+        response.sendRedirect(request.getContextPath() + "/AnalistaServlet?analistaid=" + usuario.getId());
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -14,19 +14,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registration</title>
-        <% 
-            List<Categoria> categoria = (List)request.getAttribute("categoria");
-            String message = (String)request.getAttribute("message");
-            
+        <%
+            List<Categoria> categoria = (List) request.getAttribute("categoria");
+            String message = (String) request.getAttribute("message");
+
         %>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/comon/cabecera.jsp" />           
+
         <h1>Registración Comprador</h1>
-        <%
-            if(message!=null)
-            {
+        <%            if (message != null) {
         %>
-        <p><%= message %></p>
+        <p><%= message%></p>
         <%
             }
         %>
@@ -41,13 +41,12 @@
             <input type="radio" name="sexo" value="H" />H</br>
             <input type="radio" name="sexo" value="M" />M</br>
             Categorias Preferidas:</br>
-        
-            <%for(Categoria c: categoria)
-            {
+
+            <%for (Categoria c : categoria) {
             %>
-            <input type="checkbox" name = "cat" value="<%= c.getNombre()%>"/> <%= c.getNombre() %> </br>
+            <input type="checkbox" name = "cat" value="<%= c.getNombre()%>"/> <%= c.getNombre()%> </br>
             <%
-            }
+                }
             %>
             <input type="submit" value="enviar"/>
         </form>

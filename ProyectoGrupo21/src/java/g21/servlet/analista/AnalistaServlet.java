@@ -8,9 +8,11 @@ package g21.servlet.analista;
 import g21.dao.EstudiosFacade;
 import g21.dao.UsuarioFacade;
 import g21.dto.EstudiosDTO;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Estudios;
 import g21.entity.Usuario;
 import g21.service.EstudiosService;
+import g21.service.marketing.UsuarioService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -31,6 +33,7 @@ public class AnalistaServlet extends HttpServlet {
 
     @EJB UsuarioFacade uf;
     @EJB EstudiosService es;
+    @EJB UsuarioService usuarioService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,8 +49,9 @@ public class AnalistaServlet extends HttpServlet {
         
         Integer userid = Integer.parseInt(request.getParameter("analistaid"));
         Usuario usuario = this.uf.find(userid);
+        UsuarioDTO usuariodto = this.usuarioService.findDTO(userid.toString());
         HttpSession session = request.getSession();
-        session.setAttribute("usuario", usuario);
+        session.setAttribute("usuario", usuariodto);
         
         List<EstudiosDTO> estudios = this.es.FindByUser(usuario);
         request.setAttribute("estudios", estudios);

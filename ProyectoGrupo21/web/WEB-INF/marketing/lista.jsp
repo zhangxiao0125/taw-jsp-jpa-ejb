@@ -8,8 +8,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <h1> <a href="ListasCompradorServlet">Volver a listas </a></h1>
-
     <%
 
         Lista lista = (Lista) request.getAttribute("lista");
@@ -18,6 +16,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Detalle de la lista <%= lista == null ? "" : lista.getNombre()%> </title>
     </head>
+    
+    <jsp:include page="/WEB-INF/comon/cabecera.jsp" />           
+
+    <h1> <a href="ListasCompradorServlet">Volver a listas </a></h1>
 
     <body>
         <h1>Detalle de la lista <%= lista == null ? "" : lista.getNombre()%></h1>

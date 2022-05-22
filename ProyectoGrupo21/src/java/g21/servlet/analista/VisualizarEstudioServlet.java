@@ -8,6 +8,7 @@ package g21.servlet.analista;
 import g21.dao.EstudiosFacade;
 import g21.dao.UsuarioFacade;
 import g21.dto.EstudiosDTO;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Estudios;
 import g21.entity.Usuario;
 import g21.service.EstudiosService;
@@ -29,8 +30,9 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "VisualizarEstudioServlet", urlPatterns = {"/VisualizarEstudioServlet"})
 public class VisualizarEstudioServlet extends HttpServlet {
 
-    @EJB EstudiosService es;
-    
+    @EJB
+    EstudiosService es;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,33 +44,30 @@ public class VisualizarEstudioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario)session.getAttribute("usuario");
-        
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
         Integer estudioid = Integer.parseInt(request.getParameter("estudioid"));
         EstudiosDTO estudio = this.es.buscarEstudio(estudioid);
         List<Object[]> datos = this.es.QueryOnDemand(estudio.getQuery());
-        
+
         //inicializacion del titulo
-        if(!datos.isEmpty() && (estudio.getTitulos()==null || estudio.getTitulos().equals(""))) {
+        if (!datos.isEmpty() && (estudio.getTitulos() == null || estudio.getTitulos().equals(""))) {
             String strt = "";
-            
-            for(int i=0;i<datos.get(0).length;i++) {
+
+            for (int i = 0; i < datos.get(0).length; i++) {
                 strt = strt + "_;";
             }
-            
+
             es.modificarEstudio(estudioid, estudio.getAnalistaId(), estudio.getNombre(), estudio.getQuery(), strt);
         }
-        
+
         estudio = this.es.buscarEstudio(estudioid);
         request.setAttribute("estudio", estudio);
         request.setAttribute("datos", datos);
-        
-        
-        
-        request.getRequestDispatcher("/WEB-INF/analista/nuevoestudio2.jsp").forward(request, response); 
+
+        request.getRequestDispatcher("/WEB-INF/analista/nuevoestudio2.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

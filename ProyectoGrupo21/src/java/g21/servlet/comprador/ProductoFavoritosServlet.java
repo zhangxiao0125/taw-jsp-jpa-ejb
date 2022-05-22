@@ -39,7 +39,7 @@ public class ProductoFavoritosServlet extends HttpServlet {
         
         int id = Integer.parseInt(userid);
         Usuario usuario = this.uf.findbyuserid(id);
-        request.setAttribute("usuario", usuario);
+        request.setAttribute("usuario1", usuario);
         
         request.getRequestDispatcher("/WEB-INF/comprador/productofavorito.jsp").forward(request, response);
     }

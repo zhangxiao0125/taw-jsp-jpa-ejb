@@ -16,6 +16,8 @@
         <title>Listado de compradores</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/comon/cabecera.jsp" />           
+
         <h1> <a href="ListasCompradorServlet">Volver a listas </a></h1>
         <%
             List<Usuario> compradoresDisponibles = (List) request.getAttribute("compradoresDisponibles");

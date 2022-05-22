@@ -45,7 +45,7 @@ public class BusquedaServlet extends HttpServlet {
         
         int id = Integer.parseInt(userid);
         Usuario usuario = this.uf.findbyuserid(id);
-        request.setAttribute("usuario", usuario);
+        request.setAttribute("usuario1", usuario);
         
         
         List<Producto> res_search = (List<Producto>) this.pf.findsearch(search);

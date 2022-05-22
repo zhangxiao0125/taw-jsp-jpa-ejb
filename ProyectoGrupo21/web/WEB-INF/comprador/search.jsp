@@ -24,73 +24,72 @@
     </head>
     <%
         List<Producto> producto = (List<Producto>) request.getAttribute("ressearch");
-        Usuario usuario = (Usuario) request.getAttribute("usuario");
+        Usuario usuario = (Usuario) request.getAttribute("usuario1");
     %>
     <body>
+        <jsp:include page="/WEB-INF/comon/cabecera.jsp" />           
+
         <h1>Results</h1>
-        <% 
-            if(producto.isEmpty())
-            {
+        <%
+            if (producto.isEmpty()) {
         %>
         <p>No results</p>
         <%
-            }
-        else{
-            for(Producto p: producto)
-            {
+        } else {
+            for (Producto p : producto) {
                 Usuario vendedor = p.getVendedorId();
                 SimpleDateFormat DateFor = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
                 Date compuja = p.getComienzoPuja();
                 Date finpuja = p.getFinalPuja();
                 String comienzopuja = DateFor.format(compuja);
                 String finalpuja = DateFor.format(finpuja);
-                
-    
+
+
         %>
         <form action = "AddProductoFavorito" method="post">
-        <table>
-            <tr>
-               
-                <th>Titulo:</th>
-                <th><%= p.getTitulo() %></th>
-                
-            </tr>
-            <tr>
-                <th>Descripcion:</th>
-                <td><%= p.getDescripcion() %></td>
-            </tr>
-            <tr>
-                <th>Vendedor:</th>
-                <td><%= vendedor.getNombre() %> <%= vendedor.getApellido() %></td>
-            </tr>
-            <tr>
-                <td colspan="2" align = "center"><img src="<%= p.getUrlFoto()%>" width="150" height="150"></td>
-            </tr>
-            <tr>
-                <th>Precio</th>
-                <td><%= p.getPrecio() %> </td>
+            <table>
+                <tr>
 
-            </tr>
-            <tr>
-                <th>Comienzo Puja</th>
-                <td><%= comienzopuja %> </td>
+                    <th>Titulo:</th>
+                    <th><%= p.getTitulo()%></th>
 
-            </tr>
-            <tr>
-                <th>Final Puja</th>
-                <td><%= finalpuja %> </td>
+                </tr>
+                <tr>
+                    <th>Descripcion:</th>
+                    <td><%= p.getDescripcion()%></td>
+                </tr>
+                <tr>
+                    <th>Vendedor:</th>
+                    <td><%= vendedor.getNombre()%> <%= vendedor.getApellido()%></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align = "center"><img src="<%= p.getUrlFoto()%>" width="150" height="150"></td>
+                </tr>
+                <tr>
+                    <th>Precio</th>
+                    <td><%= p.getPrecio()%> </td>
 
-            </tr>
-            <tr>
-                <th colspan="2"><a href="AddProductoFavorito?userid=<%= usuario.getUserId() %>&prodid=<%= p.getProductId()%>">Producto Favorito</a></th>
-            </tr>
-        
-        </table>
-        </br>
-        <%
-            }
-           }
-        %>
+                </tr>
+                <tr>
+                    <th>Comienzo Puja</th>
+                    <td><%= comienzopuja%> </td>
+
+                </tr>
+                <tr>
+                    <th>Final Puja</th>
+                    <td><%= finalpuja%> </td>
+
+                </tr>
+                <tr>
+                    <th colspan="2"><a href="AddProductoFavorito?userid=<%= usuario.getUserId()%>&prodid=<%= p.getProductId()%>">Producto Favorito</a></th>
+                </tr>
+
+            </table>
+            </br>
+            <%
+                    }
+                }
+            %>
         </form>
     </body>
 </html>
