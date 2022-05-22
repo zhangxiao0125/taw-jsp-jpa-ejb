@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import g21.dao.UsuarioFacade;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Lista;
 import g21.entity.Usuario;
 import g21.service.marketing.ListaService;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,7 +27,6 @@ import g21.service.marketing.ListaService;
 @WebServlet(name = "ListaBorrarServlet", urlPatterns = {"/ListaBorrarServlet"})
 public class ListaBorrarServlet extends HttpServlet {
 
-    
     @EJB
     ListaService listaService;
 
@@ -41,9 +42,13 @@ public class ListaBorrarServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String str = request.getParameter("id");
-        this.listaService.borrarLista(Integer.parseInt(str));
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 
+        if (usuario.getRolId() == 5) {
+            String str = request.getParameter("id");
+            this.listaService.borrarLista(Integer.parseInt(str));
+        }
         response.sendRedirect(request.getContextPath() + "/ListasCompradorServlet");
     }
 

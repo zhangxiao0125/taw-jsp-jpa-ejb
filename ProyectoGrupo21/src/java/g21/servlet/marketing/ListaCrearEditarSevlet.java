@@ -7,6 +7,7 @@ package g21.servlet.marketing;
 
 import g21.dao.ListaFacade;
 import g21.dto.marketing.ListaDTO;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Lista;
 import g21.service.marketing.ListaService;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,17 +41,20 @@ public class ListaCrearEditarSevlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 
-        // para crear uno nuevo
-        String nombre = null;
-        String id = null;
+        if (usuario.getRolId() == 5) {
+            // para crear uno nuevo
+            String nombre = null;
+            String id = null;
 
-        nombre = request.getParameter("nombre");
-        id = request.getParameter("id");
-        
-        ListaDTO listaDTO = new ListaDTO(id, nombre);
-        this.listaService.guardarOEditar(listaDTO);
+            nombre = request.getParameter("nombre");
+            id = request.getParameter("id");
 
+            ListaDTO listaDTO = new ListaDTO(id, nombre);
+            this.listaService.guardarOEditar(listaDTO);
+        }
         response.sendRedirect(request.getContextPath() + "/ListasCompradorServlet");
 
     }

@@ -1,36 +1,37 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package g21.servlet.marketing;
 
-import javax.ejb.EJB;
+import g21.dto.marketing.UsuarioDTO;
+import g21.entity.Lista;
+import g21.entity.Usuario;
+import g21.service.marketing.ListaService;
+import g21.service.marketing.UsuarioService;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import g21.dao.NotificacionFacade;
-import g21.dao.UsuarioFacade;
-import g21.dto.marketing.UsuarioDTO;
-import g21.entity.Notificacion;
-import g21.entity.Usuario;
-import g21.service.marketing.NotificacionService;
-import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author zhang
+ * @author Xiao
  */
-@WebServlet(name = "NotificarServlet", urlPatterns = {"/NotificarServlet"})
-public class NotificarServlet extends HttpServlet {
+@WebServlet(name = "ListaFiltrar", urlPatterns = {"/ListaFiltrar"})
+public class ListaFiltrar extends HttpServlet {
 
     @EJB
-    NotificacionService notificacionService;
+    ListaService listaService;
+    @EJB
+    UsuarioService usuarioService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,18 +44,19 @@ public class NotificarServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idLista;
-        String notificacion;
-        idLista = request.getParameter("idLista");
-        notificacion = request.getParameter("notificacion");
         HttpSession session = request.getSession();
         UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
-        
-        if (idLista != null && notificacion != null && usuario.getRolId() == 5) {
-            this.notificacionService.enviarNotificacionParaLista(idLista,usuario, notificacion);
-        }
-        response.sendRedirect(request.getContextPath() + "/ListasCompradorServlet");
+        String clave = request.getParameter("clave");
 
+        if (usuario.getRolId() == 5) {
+            List<Lista> listasCompradores;
+            listasCompradores = this.listaService.filtrarPorNombre(clave);
+            List<Usuario> compradores = this.usuarioService.getCompradores();
+
+            request.setAttribute("listasComprador", listasCompradores);
+            request.setAttribute("compradores", compradores);
+            request.getRequestDispatcher("/WEB-INF/marketing/listasComprador.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

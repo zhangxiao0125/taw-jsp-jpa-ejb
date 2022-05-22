@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -7,6 +7,7 @@ package g21.servlet.marketing;
 
 import g21.dao.ListaFacade;
 import g21.dao.UsuarioFacade;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Lista;
 import g21.entity.Usuario;
 import g21.service.marketing.ListaService;
@@ -20,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -28,8 +30,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ListasCompradorServlet", urlPatterns = {"/ListasCompradorServlet"})
 public class ListasCompradorServlet extends HttpServlet {
 
-    @EJB ListaService listaService;
-    @EJB UsuarioService usuarioService;
+    @EJB
+    ListaService listaService;
+    @EJB
+    UsuarioService usuarioService;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,7 +46,10 @@ public class ListasCompradorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
+        if (usuario.getRolId() == 5) {
             List<Lista> listasCompradores;
             listasCompradores = this.listaService.findAll();
             List<Usuario> compradores = this.usuarioService.getCompradores();
@@ -49,7 +57,7 @@ public class ListasCompradorServlet extends HttpServlet {
             request.setAttribute("listasComprador", listasCompradores);
             request.setAttribute("compradores", compradores);
             request.getRequestDispatcher("/WEB-INF/marketing/listasComprador.jsp").forward(request, response);
-             
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

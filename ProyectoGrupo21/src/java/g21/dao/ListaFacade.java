@@ -6,11 +6,14 @@
 package g21.dao;
 
 import g21.entity.Lista;
+import g21.entity.Producto;
 import g21.entity.Usuario;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -78,6 +81,15 @@ public class ListaFacade extends AbstractFacade<Lista> {
         u.getListaList().remove(l);
         this.usuarioFacade.edit(u);
         this.em.persist(l);
+    }
+
+    public List<Lista> filtrarPorNombre(String clave) {
+        Query q;
+        q = this.getEntityManager().createQuery("SELECT l FROM Lista l WHERE l.nombre LIKE :clave");
+        q.setParameter("clave", '%' + clave + '%');
+        List<Lista> result = q.getResultList();
+        return result;
+
     }
 
 }

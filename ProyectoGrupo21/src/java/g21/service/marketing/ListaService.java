@@ -58,4 +58,7 @@ public class ListaService {
                 Integer.parseInt(compradorId), Integer.parseInt(listaId));
     }
 
+    public List<Lista> filtrarPorNombre(String clave) {
+        return this.listaFacade.filtrarPorNombre(clave);
+    }
 }

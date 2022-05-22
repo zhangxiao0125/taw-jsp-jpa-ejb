@@ -24,13 +24,21 @@
             if (listasComprador == null || listasComprador.isEmpty()) {
         %>
         No hay niuguna lista
+
+        <form method="post" action="ListasCompradorServlet">
+            <input type="submit" value="Reset" />
+        </form>
         <br/>
         <%
         } else {
         %>
-        <form method="post" action="CompradorServlet">
-            Nombre: <input type="text" name="filtroNombre" value="" />
+        <form method="post" action="ListaFiltrar">
+            Nombre: <input type="text" name="clave" value="" />
             <input type="submit" value="Filtrar" />
+        </form>
+
+        <form method="post" action="ListasCompradorServlet">
+            <input type="submit" value="Reset" />
         </form>
         <br/>
         <table border="1">
@@ -62,11 +70,6 @@
 
         <!-- Compradores-->        
         <h1>Todos los compradores</h1>
-        <form method="post" action="CompradoresDeListaServlet">
-            <input type="text" name="filtroRol" value="" />
-            <input type="submit" value="Filtrar" />
-        </form>
-
         <table border="1">
             <tr>
                 <th>NOMBRE</th>

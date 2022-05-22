@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import g21.dao.UsuarioFacade;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Lista;
 import g21.entity.Usuario;
 import g21.service.marketing.ListaService;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,11 +42,15 @@ public class ListaNuevoEditarForm extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 
-        String str = request.getParameter("id");
-        if (str != null) {
-            Lista lista = this.listaService.find(str);
-            request.setAttribute("lista", lista);
+        if (usuario.getRolId() == 5) {
+            String str = request.getParameter("id");
+            if (str != null) {
+                Lista lista = this.listaService.find(str);
+                request.setAttribute("lista", lista);
+            }
         }
 
         request.getRequestDispatcher("/WEB-INF/marketing/lista.jsp").forward(request, response);

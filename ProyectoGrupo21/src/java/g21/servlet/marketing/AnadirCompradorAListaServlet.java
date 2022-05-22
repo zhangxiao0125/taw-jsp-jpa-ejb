@@ -6,6 +6,7 @@
 package g21.servlet.marketing;
 
 import g21.dao.ListaFacade;
+import g21.dto.marketing.UsuarioDTO;
 import g21.service.marketing.ListaService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,8 +44,13 @@ public class AnadirCompradorAListaServlet extends HttpServlet {
         // para crear uno nuevo
         String listaId = request.getParameter("listaId");
         String compradorId = request.getParameter("compradorId");
+        
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
 
-        this.listaService.andirCompradorALista(Integer.parseInt(compradorId), Integer.parseInt(listaId));
+        if (usuario.getRolId() == 5) {
+            this.listaService.andirCompradorALista(Integer.parseInt(compradorId), Integer.parseInt(listaId));
+        }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/CompradoresDeListaServlet?id=" + listaId);
         dispatcher.forward(request, response);

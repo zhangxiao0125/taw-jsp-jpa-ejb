@@ -26,10 +26,6 @@
 
         <!-- Compradores que no estan en esta lista -->        
         <h1>Compradores de la lista <%= lista.getNombre()%></h1>
-        <form method="post" action="CompradoresDeListaServlet">
-            <input type="text" name="filtroRol" value="" />
-            <input type="submit" value="Filtrar" />
-        </form>
 
         <table border="1">
             <tr>

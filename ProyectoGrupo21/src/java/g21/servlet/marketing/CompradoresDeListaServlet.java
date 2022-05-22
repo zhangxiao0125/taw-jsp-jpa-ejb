@@ -7,6 +7,7 @@ package g21.servlet.marketing;
 
 import g21.dao.ListaFacade;
 import g21.dao.UsuarioFacade;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Usuario;
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import g21.entity.Lista;
 import g21.service.marketing.ListaService;
 import g21.service.marketing.UsuarioService;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -43,14 +45,18 @@ public class CompradoresDeListaServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String id = request.getParameter("id");
-        Lista lista = this.listaService.find(id);
-        List<Usuario> compradoresDisponibles = this.usuarioService.getCompradoresDisponibles(Integer.parseInt(id));
-        
-        request.setAttribute("lista", lista);
-        request.setAttribute("compradoresDisponibles", compradoresDisponibles);
 
+        String id = request.getParameter("id");
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
+        if (usuario.getRolId() == 5) {
+            Lista lista = this.listaService.find(id);
+            List<Usuario> compradoresDisponibles = this.usuarioService.getCompradoresDisponibles(Integer.parseInt(id));
+
+            request.setAttribute("lista", lista);
+            request.setAttribute("compradoresDisponibles", compradoresDisponibles);
+        }
         request.getRequestDispatcher("/WEB-INF/marketing/compradoresDeLista.jsp").forward(request, response);
     }
 
