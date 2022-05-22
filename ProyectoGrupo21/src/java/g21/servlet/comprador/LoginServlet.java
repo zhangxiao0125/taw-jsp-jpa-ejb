@@ -22,7 +22,10 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
-    @EJB UsuarioFacade uf;
+
+    @EJB
+    UsuarioFacade uf;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,42 +37,47 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-            String nombre = request.getParameter("nombre");
-            String apellido = request.getParameter("apellido");
-            String email = request.getParameter("email");
-            
-            Usuario userbyemail = this.uf.findbyemail(email);
-            
+
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String email = request.getParameter("email");
+
+        Usuario userbyemail = this.uf.findbyemail(email);
+
             HttpSession session = request.getSession();
             session.setAttribute("usuario", userbyemail);
-            if(userbyemail == null)
-            {
-                String message = "Usuario no existe. Por favor registrate";
-                
-                response.sendRedirect(request.getContextPath() + "/FirstServlet?message="+message);
-            }
-            else
-            {
-                String message = null;
-                request.setAttribute("message", message);
-                request.setAttribute("usuario", userbyemail);
-                
-                //ver el rol de este usuario
-                if(userbyemail.getRolId().getRolId().equals(1)) {   //comprador
+        if (userbyemail == null) {
+            String message = "Usuario no existe. Por favor registrate";
+
+            response.sendRedirect(request.getContextPath() + "/FirstServlet?message=" + message);
+        } else {
+
+
+            String message = null;
+            request.setAttribute("message", message);
+            request.setAttribute("usuario", userbyemail);
+
+            //ver el rol de este usuario
+            switch (userbyemail.getRolId().getRolId()) {
+                case 1:
+                    //comprador
                     request.getRequestDispatcher("/WEB-INF/comprador/usuario.jsp").forward(request, response);
-                } else if (userbyemail.getRolId().getRolId().equals(2)) {   //analista
-                    response.sendRedirect(request.getContextPath() + "/AnalistaServlet?analistaid="+userbyemail.getUserId());
-                }  else if (userbyemail.getRolId().getRolId().equals(5)) {  //Marketing
+                    break;
+                case 2:
+                    //analista
+                    response.sendRedirect(request.getContextPath() + "/AnalistaServlet?analistaid=" + userbyemail.getUserId());
+                    break;
+                case 5:
+                    //Marketing
                     response.sendRedirect(request.getContextPath() + "/ListasCompradorServlet");
-                }
-                
-                
+                    break;
+                default:
+                    break;
             }
-            
-        
-            
+
         }
+
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -6,7 +6,9 @@
 package g21.servlet.marketing;
 
 import g21.dao.ListaFacade;
+import g21.dto.marketing.ListaDTO;
 import g21.entity.Lista;
+import g21.service.marketing.ListaService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ListaCrearEditarSevlet extends HttpServlet {
 
     @EJB
-    ListaFacade listaFacade;
+    ListaService listaService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,29 +46,10 @@ public class ListaCrearEditarSevlet extends HttpServlet {
 
         nombre = request.getParameter("nombre");
         id = request.getParameter("id");
+        
+        ListaDTO listaDTO = new ListaDTO(id, nombre);
+        this.listaService.guardarOEditar(listaDTO);
 
-        Lista lista = new Lista();
-        if (nombre != null && nombre.length() > 0) {
-            lista.setNombre(nombre);
-        }
-
-        try {
-            if (id != null) {
-                lista.setListaId(Integer.parseInt(id));
-            }
-        } catch (Exception e) {
-
-        } finally {
-
-        }
-
-        // si el id es invalido, creamos uno nuevo.
-        if (lista.getListaId() == null) {
-            this.listaFacade.create(lista);
-        } else {
-            // si el id es valido, editamos la antigua
-            this.listaFacade.edit(lista);
-        }
         response.sendRedirect(request.getContextPath() + "/ListasCompradorServlet");
 
     }
