@@ -6,6 +6,7 @@
 package g21.servlet.marketing;
 
 import g21.dao.ListaFacade;
+import g21.service.marketing.ListaService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 public class BorrarCompradorDesdeListaServlet extends HttpServlet {
 
     @EJB
-    ListaFacade listaFacade;
+    ListaService listaService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +42,7 @@ public class BorrarCompradorDesdeListaServlet extends HttpServlet {
         String listaId = request.getParameter("listaId");
         String compradorId = request.getParameter("compradorId");
 
-        this.listaFacade.borrarCompradorDesdeLaLista(Integer.parseInt(compradorId), Integer.parseInt(listaId));
+        this.listaService.borrarCompradorDesdeLaLista(compradorId, listaId);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/CompradoresDeListaServlet?id=" + listaId);
         dispatcher.forward(request, response);

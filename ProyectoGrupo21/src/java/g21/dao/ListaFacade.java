@@ -19,8 +19,9 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class ListaFacade extends AbstractFacade<Lista> {
 
-    @EJB UsuarioFacade usuarioFacade;
-    
+    @EJB
+    UsuarioFacade usuarioFacade;
+
     @PersistenceContext(unitName = "ProyectoGrupo21PU")
     private EntityManager em;
 
@@ -32,9 +33,8 @@ public class ListaFacade extends AbstractFacade<Lista> {
     public ListaFacade() {
         super(Lista.class);
     }
-    
-    
-        public void borrarLista(int parseInt) {
+
+    public void borrarLista(int parseInt) {
         Lista l = this.find(parseInt);
         this.em.remove(l);
     }
@@ -63,9 +63,8 @@ public class ListaFacade extends AbstractFacade<Lista> {
 
             u.getListaList().add(l);
             this.usuarioFacade.edit(u);
-            
-            this.em.persist(l);
 
+            this.em.persist(l);
         }
     }
 
@@ -80,6 +79,5 @@ public class ListaFacade extends AbstractFacade<Lista> {
         this.usuarioFacade.edit(u);
         this.em.persist(l);
     }
-    
-    
+
 }

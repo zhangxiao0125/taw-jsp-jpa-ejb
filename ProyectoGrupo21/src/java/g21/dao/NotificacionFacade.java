@@ -23,9 +23,11 @@ import javax.persistence.Query;
 @Stateless
 public class NotificacionFacade extends AbstractFacade<Notificacion> {
 
-    @EJB ListaFacade listaFacade;
-    @EJB UsuarioFacade usuarioFacade;
-    
+    @EJB
+    ListaFacade listaFacade;
+    @EJB
+    UsuarioFacade usuarioFacade;
+
     @PersistenceContext(unitName = "ProyectoGrupo21PU")
     private EntityManager em;
 
@@ -37,28 +39,24 @@ public class NotificacionFacade extends AbstractFacade<Notificacion> {
     public NotificacionFacade() {
         super(Notificacion.class);
     }
-    
-    
+
     public List<Notificacion> getTodasNotificaciones(int id) {
         Query q;
         q = this.getEntityManager().createQuery("SELECT n FROM Notificacion n WHERE n.receptor.userId = :id");
         q.setParameter("id", id);
         return q.getResultList();
     }
-    
-    public void enviarNotificacionParaLista(int idLista, String notificacion) {
-        Lista l = this.listaFacade.find(idLista);
-        Usuario marketingUsuario = this.usuarioFacade.find(4);
+
+    public void enviarNotificacionParaLista(Lista l, Usuario mensajero, String notificacion) {
         for (Usuario usuario : l.getUsuarioList()) {
             Notificacion n = new Notificacion();
             n.setFecha(new Date());
             n.setMensaje(notificacion);
             n.setReceptor(usuario);
-            n.setMensajero(marketingUsuario);
+            n.setMensajero(mensajero);
             //usuario.getNotificacionList().add(n);
             this.em.persist(n);
         }
-        
     }
-    
+
 }

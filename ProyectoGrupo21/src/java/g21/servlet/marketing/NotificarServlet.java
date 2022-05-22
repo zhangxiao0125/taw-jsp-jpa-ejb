@@ -17,6 +17,7 @@ import g21.dao.NotificacionFacade;
 import g21.dao.UsuarioFacade;
 import g21.entity.Notificacion;
 import g21.entity.Usuario;
+import g21.service.marketing.NotificacionService;
 import java.util.ArrayList;
 
 /**
@@ -27,9 +28,7 @@ import java.util.ArrayList;
 public class NotificarServlet extends HttpServlet {
 
     @EJB
-    NotificacionFacade nf;
-    @EJB
-    UsuarioFacade uf;
+    NotificacionService notificacionService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,7 +47,7 @@ public class NotificarServlet extends HttpServlet {
         notificacion = request.getParameter("notificacion");
 
         if (idLista != null && notificacion != null) {
-            this.nf.enviarNotificacionParaLista(Integer.parseInt(idLista), notificacion);
+            this.notificacionService.enviarNotificacionParaLista(idLista, notificacion);
         }
         response.sendRedirect(request.getContextPath() + "/ListasCompradorServlet");
 

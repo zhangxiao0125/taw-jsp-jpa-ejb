@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import g21.entity.Notificacion;
 import g21.entity.Usuario;
+import g21.service.marketing.NotificacionService;
+import g21.service.marketing.UsuarioService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -30,9 +32,9 @@ import javax.servlet.RequestDispatcher;
 public class VerMensajesServlet extends HttpServlet {
 
     @EJB
-    NotificacionFacade nf;
+    NotificacionService notificacionService;
     @EJB
-    UsuarioFacade usuarioFacade;
+    UsuarioService usuarioService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,8 +52,8 @@ public class VerMensajesServlet extends HttpServlet {
         List<Notificacion> notificaciones = new ArrayList<>();
         Usuario comprador=new Usuario();
         if (id != null) {
-            notificaciones = this.nf.getTodasNotificaciones(Integer.parseInt(id));
-            comprador = this.usuarioFacade.find(Integer.parseInt(id));
+            notificaciones = this.notificacionService.getTodasNotificaciones(id);
+            comprador = this.usuarioService.find(id);
         }
         request.setAttribute("notificaciones", notificaciones);
         request.setAttribute("comprador", comprador);

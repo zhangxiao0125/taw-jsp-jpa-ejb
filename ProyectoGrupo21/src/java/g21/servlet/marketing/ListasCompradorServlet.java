@@ -9,6 +9,8 @@ import g21.dao.ListaFacade;
 import g21.dao.UsuarioFacade;
 import g21.entity.Lista;
 import g21.entity.Usuario;
+import g21.service.marketing.ListaService;
+import g21.service.marketing.UsuarioService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -26,8 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ListasCompradorServlet", urlPatterns = {"/ListasCompradorServlet"})
 public class ListasCompradorServlet extends HttpServlet {
 
-    @EJB ListaFacade listaFacade;
-    @EJB UsuarioFacade usuarioFacade;
+    @EJB ListaService listaService;
+    @EJB UsuarioService usuarioService;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,11 +43,8 @@ public class ListasCompradorServlet extends HttpServlet {
             throws ServletException, IOException {
         
             List<Lista> listasCompradores;
-
-            listasCompradores = this.listaFacade.findAll();
-            
-            
-            List<Usuario> compradores = this.usuarioFacade.getCompradores();
+            listasCompradores = this.listaService.findAll();
+            List<Usuario> compradores = this.usuarioService.getCompradores();
 
             request.setAttribute("listasComprador", listasCompradores);
             request.setAttribute("compradores", compradores);

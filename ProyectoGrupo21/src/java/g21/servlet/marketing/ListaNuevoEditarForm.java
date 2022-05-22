@@ -17,6 +17,7 @@ import java.util.List;
 import g21.dao.UsuarioFacade;
 import g21.entity.Lista;
 import g21.entity.Usuario;
+import g21.service.marketing.ListaService;
 
 /**
  *
@@ -26,7 +27,7 @@ import g21.entity.Usuario;
 public class ListaNuevoEditarForm extends HttpServlet {
 
     @EJB
-    ListaFacade listaFacade;
+    ListaService listaService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +40,10 @@ public class ListaNuevoEditarForm extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String str = request.getParameter("id");
         if (str != null) {
-            Lista lista = this.listaFacade.find(Integer.parseInt(str));
+            Lista lista = this.listaService.find(str);
             request.setAttribute("lista", lista);
         }
 

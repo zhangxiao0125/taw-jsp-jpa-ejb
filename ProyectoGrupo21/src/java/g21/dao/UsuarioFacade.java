@@ -22,8 +22,9 @@ import javax.persistence.Query;
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {
 
-    @EJB ListaFacade listaFacade;
-    
+    @EJB
+    ListaFacade listaFacade;
+
     @PersistenceContext(unitName = "ProyectoGrupo21PU")
     private EntityManager em;
 
@@ -35,42 +36,33 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
-    
-    public Usuario findbyuserid(int userid)
-    {
+
+    public Usuario findbyuserid(int userid) {
         Query q;
         q = this.getEntityManager().createNamedQuery("Usuario.findByUserId");
         q.setParameter("userId", userid);
-        
+
         List<Usuario> result = q.getResultList();
-        if(result.isEmpty())
-        {
+        if (result.isEmpty()) {
             return null;
-        }
-        else
-        {
+        } else {
             return result.get(0);
         }
     }
-    public Usuario findbyemail(String email)
-    {
+
+    public Usuario findbyemail(String email) {
         Query q;
         q = this.getEntityManager().createNamedQuery("Usuario.findByEmail");
-        q.setParameter("email",  email);
-        
+        q.setParameter("email", email);
+
         List<Usuario> result = q.getResultList();
-        if(result.isEmpty())
-        {
+        if (result.isEmpty()) {
             return null;
-        }
-        else
-        {
+        } else {
             return result.get(0);
         }
     }
-    
-    
+
     public List<Usuario> filtroComprador(Integer idLista) {
 
         Query q;
@@ -81,8 +73,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         return q.getResultList();
     }
 
-    public List<Usuario> getCompradoresDisponibles(Integer idLista) {
-        Lista l = this.listaFacade.find(idLista);
+    public List<Usuario> getCompradoresDisponibles(Lista l) {
         List<Integer> idsL = new ArrayList<>();
 
         l.getUsuarioList().forEach((u) -> {
@@ -105,6 +96,5 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         q = this.getEntityManager().createQuery("SELECT u from Usuario u where u.rolId.rolId = 1");
         return q.getResultList();
     }
-    
-    
+
 }

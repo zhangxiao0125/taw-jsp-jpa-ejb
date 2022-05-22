@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import g21.entity.Lista;
+import g21.service.marketing.ListaService;
+import g21.service.marketing.UsuarioService;
 
 /**
  *
@@ -26,9 +28,9 @@ import g21.entity.Lista;
 public class CompradoresDeListaServlet extends HttpServlet {
 
     @EJB
-    UsuarioFacade usuarioFacade;
+    UsuarioService usuarioService;
     @EJB
-    ListaFacade listaFacade;
+    ListaService listaService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,20 +43,14 @@ public class CompradoresDeListaServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String id = request.getParameter("id");
-//        
-//        request.setAttribute("lista", usuarioFacade.buscarLista(Integer.parseInt(id)));
-//        request.setAttribute("compradores", usuarioFacade.Comprador());
-//        
-//        request.getRequestDispatcher("compradores.jsp").forward(request, response);
-
-        //List<Usuario> compradores = this.usuarioFacade.filtroComprador(Integer.parseInt(id));
-        Lista lista = this.listaFacade.find(Integer.parseInt(id));
-
-        List<Usuario> compradoresDisponibles = this.usuarioFacade.getCompradoresDisponibles(Integer.parseInt(id));
+        Lista lista = this.listaService.find(id);
+        List<Usuario> compradoresDisponibles = this.usuarioService.getCompradoresDisponibles(Integer.parseInt(id));
+        
         request.setAttribute("lista", lista);
         request.setAttribute("compradoresDisponibles", compradoresDisponibles);
-        
+
         request.getRequestDispatcher("/WEB-INF/marketing/compradoresDeLista.jsp").forward(request, response);
     }
 
