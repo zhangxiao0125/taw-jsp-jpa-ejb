@@ -7,6 +7,7 @@ package g21.servlet.marketing;
 
 import g21.dao.NotificacionFacade;
 import g21.dao.UsuarioFacade;
+import g21.dto.marketing.UsuarioDTO;
 import g21.entity.Lista;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +24,7 @@ import g21.service.marketing.UsuarioService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -47,16 +49,21 @@ public class VerMensajesServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id;
-        id = request.getParameter("compradorId");
-        List<Notificacion> notificaciones = new ArrayList<>();
-        Usuario comprador=new Usuario();
-        if (id != null) {
-            notificaciones = this.notificacionService.getTodasNotificaciones(id);
-            comprador = this.usuarioService.find(id);
+        HttpSession session = request.getSession();
+        UsuarioDTO usuario = (UsuarioDTO) session.getAttribute("usuario");
+
+        if (usuario.getRolId() == 5) {
+            String id;
+            id = request.getParameter("compradorId");
+            List<Notificacion> notificaciones = new ArrayList<>();
+            Usuario comprador = new Usuario();
+            if (id != null) {
+                notificaciones = this.notificacionService.getTodasNotificaciones(id);
+                comprador = this.usuarioService.find(id);
+            }
+            request.setAttribute("notificaciones", notificaciones);
+            request.setAttribute("comprador", comprador);
         }
-        request.setAttribute("notificaciones", notificaciones);
-        request.setAttribute("comprador", comprador);
         request.getRequestDispatcher("/WEB-INF/marketing/mensajes.jsp").forward(request, response);
 
     }
